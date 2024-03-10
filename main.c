@@ -18,7 +18,7 @@
 #include "esp8266.h"
 #include "onenet.h"
 
-#define DATA_NUM 50
+#define DATA_NUM 60
 
 uint8_t alarm_flag;
 uint8_t alarm_is_free = 10;

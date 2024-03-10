@@ -18,7 +18,7 @@
 #include "esp8266.h"
 #include "onenet.h"
 
-#define DATA_NUM 60
+#define DATA_NUM 50
 
 uint8_t alarm_flag;
 uint8_t alarm_is_free = 10;
@@ -28,72 +28,72 @@ uint8_t Temperature;
 uint8_t Humidity;
 uint8_t Light;      
 uint8_t AirQuality;
-uint8_t TemperatureMax = 30;//ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½Öµ//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
+uint8_t TemperatureMax = 30;//ÔÊÐí(²»±¨¾¯)µÄ×î´óÖµ//³¬¹ý¸ÃÖµ±¨¾¯
 uint8_t HumidityMax = 70;
 uint8_t LightMax = 50;      
-uint8_t AirQualityMin = 50;//ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½Ð¡Öµ//ï¿½Í¹ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
+uint8_t AirQualityMin = 50;//ÔÊÐí(²»±¨¾¯)µÄ×îÐ¡Öµ//µÍ¹ý¸ÃÖµ±¨¾¯
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»
-uint8_t Lcd_Page = 1;//LCDï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+//ÐÂÔö±êÖ¾Î»
+uint8_t Lcd_Page = 1;//LCD¹¦ÄÜÒ³Ãæ
 uint8_t changeflag;
 uint8_t Curtain_Status;
-uint8_t lastmove = 2;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½0:ï¿½ï¿½×ª 1:ï¿½ï¿½×ª 2:ï¿½ï¿½ï¿½Í£Ö¹ Ä¬ï¿½ï¿½Í£Ö¹
-uint32_t pulse = 64*64;//pulse = int(double)(angle/5.625)*64(angleÎªï¿½ï¿½Òªï¿½ï¿½×ªï¿½Ä½Ç¶È£ï¿½64*64ï¿½ï¿½ï¿½ï¿½360ï¿½ï¿½
-uint8_t Windows_Status = 1;//=1Ä¬ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8_t lastmove = 2;//²½½øµç»ú×´Ì¬£¬0:Õý×ª 1:·´×ª 2:µç»úÍ£Ö¹ Ä¬ÈÏÍ£Ö¹
+uint32_t pulse = 64*64;//pulse = int(double)(angle/5.625)*64(angleÎªÐèÒªÐý×ªµÄ½Ç¶È£©64*64¾ÍÊÇ360¶È
+uint8_t Windows_Status = 1;//=1Ä¬ÈÏ´°»§¹Ø×Å
 uint8_t HomeMode;
 
-uint8_t LED1_Status;//ï¿½ÆµÆµï¿½×´Ì¬  1:ï¿½ï¿½  0:Ï¨ï¿½ï¿½       
-uint8_t BEEP1_Status;//ï¿½Ç±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ 0:ï¿½ï¿½  1:ï¿½ï¿½ï¿½ï¿½  
+uint8_t LED1_Status;//»ÆµÆµÄ×´Ì¬  1:ÁÁ  0:Ï¨Ãð       
+uint8_t BEEP1_Status;//·Ç±¨¾¯·äÃùÆ÷×´Ì¬ 0:Ïì  1:²»Ïì  
 char* weekdays[]={"Sunday","Monday","Tuesday","Wednesday",
                   "Thursday","Friday","Saterday"};
 
 
-char PUB_BUF[256];//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ýµï¿½buf
-const char *devSubTopic[] = {"/mysmarthome_stm32_8266/sub"};//ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-const char devPubTopic[] = {"/mysmarthome_stm32_8266/pub"}; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+char PUB_BUF[256];//ÉÏ´«Êý¾ÝµÄbuf
+const char *devSubTopic[] = {"/mysmarthome_stm32_8266/sub"};//¶©ÔÄµÄÖ÷ÌâÃû
+const char devPubTopic[] = {"/mysmarthome_stm32_8266/pub"}; //·¢²¼µÄÖ÷ÌâÃû
 	
 int main(void)
 {
     uint16_t t = 0;
 	uint8_t tbuf[40];
     
-	unsigned short timeCount = 0;	            //ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
+	unsigned short timeCount = 0;	            //·¢ËÍ¼ä¸ô±äÁ¿	
 	unsigned char *dataPtr = NULL;
 
-    HAL_Init();                         /* ï¿½ï¿½Ê¼ï¿½ï¿½HALï¿½ï¿½ */
-    sys_stm32_clock_init(RCC_PLL_MUL9); /* ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½, 72Mhz */
-    delay_init(72);                     /* ï¿½ï¿½Ê±ï¿½ï¿½Ê¼ï¿½ï¿½ */
-	Usart1_Init(115200);                //DEBUG ï¿½ï¿½ï¿½ï¿½1
-	Usart2_Init(115200);                //STM32_8266Í¨Ñ¶ï¿½ï¿½ï¿½ï¿½
-    led_init();                         /* ï¿½ï¿½Ê¼ï¿½ï¿½LED */
-	beep_init();                        /* ï¿½ï¿½Ê¼ï¿½ï¿½BEEP */   
-    lcd_init();                         /* ï¿½ï¿½Ê¼ï¿½ï¿½LCD */
-    my_adc_nch_dma_init((uint32_t)&g_adc_dma_buf); /* ï¿½ï¿½Ê¼ï¿½ï¿½ADC3 */
+    HAL_Init();                         /* ³õÊ¼»¯HAL¿â */
+    sys_stm32_clock_init(RCC_PLL_MUL9); /* ÉèÖÃÊ±ÖÓ, 72Mhz */
+    delay_init(72);                     /* ÑÓÊ±³õÊ¼»¯ */
+	Usart1_Init(115200);                //DEBUG ´®¿Ú1
+	Usart2_Init(115200);                //STM32_8266Í¨Ñ¶´®¿Ú
+    led_init();                         /* ³õÊ¼»¯LED */
+	beep_init();                        /* ³õÊ¼»¯BEEP */   
+    lcd_init();                         /* ³õÊ¼»¯LCD */
+    my_adc_nch_dma_init((uint32_t)&g_adc_dma_buf); /* ³õÊ¼»¯ADC3 */
 	my_adc_dma_enable(DATA_NUM);
-	btim_tim6_int_init(7200-1, 5000);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½,0.5sï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½Ö´ï¿½Ðµï¿½ï¿½ï¿½alarm_flagï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	btim_tim6_int_init(7200-1, 5000);//»ù±¾¶¨Ê±Æ÷,0.5sµÄÊ±¼ä¸üÐÂÖÐ¶Ï£¬¸üÐÂÖÐ¶ÏÖ´ÐÐµÄÊÇalarm_flagµÄÄÚÈÝ
 	Servo_Init();
 	key_extix_init();
 	dht11_init();
-    tp_dev.init();  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    tp_dev.init();  //ÓÐÎÊÌâ
     at24cxx_init();	
 	Servo_Init();
 	rtc_init();
 	UsartPrintf(USART_DEBUG, " Hardware init OK\r\n");
 	
-	ESP8266_Init();					//ï¿½ï¿½Ê¼ï¿½ï¿½ESP8266
-	while(OneNet_DevLink())			//ï¿½ï¿½ï¿½ï¿½OneNET//ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Ó³É¹ï¿½ï¿½ï¿½ï¿½ï¿½0
+	ESP8266_Init();					//³õÊ¼»¯ESP8266
+	while(OneNet_DevLink())			//½ÓÈëOneNET//Á¬½Ó·þÎñÆ÷µÄº¯Êý,Á¬½Ó³É¹¦·µ»Ø0
 		delay_ms(500);
 	
-	BEEP(1);				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½É¹ï¿½
+	BEEP(1);				//Ãù½ÐÌáÊ¾½ÓÈë³É¹¦
 	delay_ms(250);
 	BEEP(0);
 	
-	OneNet_Subscribe(devSubTopic, 1);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	OneNet_Subscribe(devSubTopic, 1);//¶©ÔÄÖ÷Ìâ
 	
-	//ÏµÍ³ï¿½×´ï¿½ï¿½Ïµç£¬ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÏµÍ³Ê×´ÎÉÏµç£¬³õÊ¼»¯Êý¾Ý
 	if(at24cxx_read_one_byte(80)!= 0xA0)
 	{
-		//ï¿½ï¿½EEPROMï¿½ï¿½Ð´ï¿½ï¿½ï¿½è±£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÏòEEPROMÖÐÐ´ÈëÐè±£´æµÄÊý¾Ý
 		at24cxx_write_one_byte(60,TemperatureMax);
 		at24cxx_write_one_byte(61,HumidityMax);
 		at24cxx_write_one_byte(62,LightMax);
@@ -101,17 +101,17 @@ int main(void)
 
 		at24cxx_write_one_byte(80,0xA0);
 	}
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½Êµï¿½Öµï¿½ï¿½ç±£ï¿½æ¹¦ï¿½ï¿½
+	//¶Á³ö±£´æµÄÊý¾Ý£¬ÊµÏÖµôµç±£´æ¹¦ÄÜ
 	TemperatureMax = at24cxx_read_one_byte(60);
 	HumidityMax = at24cxx_read_one_byte(61);
 	LightMax = at24cxx_read_one_byte(62);
 	AirQualityMin = at24cxx_read_one_byte(63);
 
-	 //**********ï¿½ï¿½ï¿½dht11ï¿½ï¿½Êªï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½**********
-//	if(dht11_init()) /* DHT11ï¿½ï¿½Ê¼ï¿½ï¿½ */
+	 //**********¼ì²âdht11ÎÂÊª¶È´«¸ÐÆ÷ÊÇ·ñÁ¬½Ó**********
+//	if(dht11_init()) /* DHT11³õÊ¼»¯ */
 //		{
 //			lcd_show_string(30, 50, 200, 16, 16, "DHT11 Error", RED);
-//			//delay_ms(200);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾dht11Î´ï¿½ï¿½ï¿½ï¿½
+//			//delay_ms(200);//×ÖÌåÉÁ¶¯£¬ÌáÊ¾dht11Î´Á¬½Ó
 //			lcd_fill(30, 50, 239, 70 + 16, WHITE);//30, 50, 239, 70 + 20, WHITE
 //			//delay_ms(200);
 //		}
@@ -127,53 +127,53 @@ int main(void)
 	while(1)
    {
 	
-	    /**********ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½**********/	
-//		if(t % 12 == 0)  //300msÖ´ï¿½ï¿½Ò»ï¿½ï¿½  300/25=12
+	    /**********´«¸ÐÆ÷ÊýÖµÏÔÊ¾²¿·Ö**********/	
+//		if(t % 12 == 0)  //300msÖ´ÐÐÒ»´Î  300/25=12
 //		{
-//			lcd_show_num(30 + 40, 70, Temperature, 2, 16, RED); /* ï¿½ï¿½Ê¾ï¿½Â¶ï¿½ */
-//			lcd_show_num(30 + 40, 90, Humidity, 2, 16, RED);    /* ï¿½ï¿½Ê¾Êªï¿½ï¿½ */
-//			lcd_show_num(30 + 40, 110, Light, 3, 16, RED); /* ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ */
-//			lcd_show_num(30 + 40, 130, AirQuality, 3, 16, RED);    /* ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+//			lcd_show_num(30 + 40, 70, Temperature, 2, 16, RED); /* ÏÔÊ¾ÎÂ¶È */
+//			lcd_show_num(30 + 40, 90, Humidity, 2, 16, RED);    /* ÏÔÊ¾Êª¶È */
+//			lcd_show_num(30 + 40, 110, Light, 3, 16, RED); /* ÏÔÊ¾¹âÕÕÇ¿¶È */
+//			lcd_show_num(30 + 40, 130, AirQuality, 3, 16, RED);    /* ÏÔÊ¾¿ÕÆøÖÊÁ¿ */
 //		}
-	    LED1_Status =((uint8_t)HAL_GPIO_ReadPin(LED1_GPIO_PORT, LED1_GPIO_PIN));     /* ï¿½ï¿½È¡LED1ï¿½ï¿½ï¿½ï¿½ */
-		BEEP1_Status =((uint8_t)HAL_GPIO_ReadPin(BEEP1_GPIO_PORT, BEEP1_GPIO_PIN));  /* ï¿½ï¿½È¡BEEP1ï¿½ï¿½ï¿½ï¿½ */
-		/**********1sï¿½ï¿½È¡Ò»ï¿½Î»ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ð¶Ï±ï¿½ï¿½ï¿½***********/  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   
+	    LED1_Status =((uint8_t)HAL_GPIO_ReadPin(LED1_GPIO_PORT, LED1_GPIO_PIN));     /* ¶ÁÈ¡LED1Òý½Å */
+		BEEP1_Status =((uint8_t)HAL_GPIO_ReadPin(BEEP1_GPIO_PORT, BEEP1_GPIO_PIN));  /* ¶ÁÈ¡BEEP1Òý½Å */
+		/**********1s¶ÁÈ¡Ò»´Î»·¾³Öµ²¢ÅÐ¶Ï±¨¾¯***********/  //±¨¾¯²¿·ÖÒ²¿ÉÒÔµ¥¶À³öÀ´   
 		if(t % 40 == 0) //  1000/25=40
 		{
-			dht11_read_data(&Temperature, &Humidity);             /* ï¿½ï¿½È¡ï¿½ï¿½Êªï¿½ï¿½Öµ */
+			dht11_read_data(&Temperature, &Humidity);             /* ¶ÁÈ¡ÎÂÊª¶ÈÖµ */
 			Light = lsens_get_val(my_get_value(2, 2, g_adc_dma_buf, DATA_NUM)); 
 			AirQuality = airqu_get_val(my_get_value(2, 1, g_adc_dma_buf, DATA_NUM)); 
-			UsartPrintf(USART_DEBUG,"ï¿½ï¿½Ç°ï¿½Â¶ï¿½Îª:%dC\nï¿½ï¿½Ç°Êªï¿½ï¿½Îª:%d%%",Temperature,Humidity);
-			UsartPrintf(USART_DEBUG,"ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Îª:%d\nï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª:%d",Light,AirQuality);
-			/*****************ï¿½Ð¶ï¿½ï¿½Ç·ñ±¨¾ï¿½***************/ //ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½key0ï¿½ï¿½ï¿½ï¿½alarm_is_freeÎª0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½10sï¿½ó»·¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			UsartPrintf(USART_DEBUG,"µ±Ç°ÎÂ¶ÈÎª:%dC\nµ±Ç°Êª¶ÈÎª:%d%%",Temperature,Humidity);
+			UsartPrintf(USART_DEBUG,"µ±Ç°¹âÕÕÇ¿¶ÈÎª:%d\nµ±Ç°¿ÕÆøÖÊÁ¿Îª:%d",Light,AirQuality);
+			/*****************ÅÐ¶ÏÊÇ·ñ±¨¾¯***************/ //°´ÏÂ°´¼ükey0£¬Çåalarm_is_freeÎª0£¬Çå³ý¾¯±¨£¬Èç¹û10sºó»·¾³Á¿³¬¹ýãÐÖµ£¬¼ÌÐø±¨¾¯
 			if(alarm_is_free == 10)
 			{
 				if((Temperature < TemperatureMax) && (Humidity < HumidityMax) && (Light < LightMax) && (AirQuality > AirQualityMin)) alarm_flag = 0;
 				else alarm_flag = 1;		
 			}		
-			if(alarm_is_free < 10) alarm_is_free++;	//Ã¿ï¿½ï¿½1s alarm_is_free+1		
+			if(alarm_is_free < 10) alarm_is_free++;	//Ã¿¸ô1s alarm_is_free+1		
 			
 		}
 		
-		/*****************ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤***************/  //ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		/*****************´®¿Ú³ÌÐòÑéÖ¤***************/  //´®¿Ú½ÓÊÕÊý¾ÝÕý³£
 //		unsigned char ch1[]="USART1YES";
 //		unsigned char ch2[]="USART2YES";
 //		if(t % 10 == 0) 
 //		{
 //			Usart_SendString(USART1,ch1,9);
-//			Usart_SendString(USART2,ch2,9);//ÒªÍ¨ï¿½ï¿½PA2ï¿½ï¿½PA3ï¿½ï¿½TTL×ªï¿½ï¿½ï¿½Ú²ï¿½ï¿½Ü¼ï¿½âµ½ï¿½Ç·ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½
+//			Usart_SendString(USART2,ch2,9);//ÒªÍ¨¹ýPA2£¬PA3½ÓTTL×ª´®¿Ú²ÅÄÜ¼ì²âµ½ÊÇ·ñÊÕµ½Êý¾Ý
 //			USART_SendData(USART1,122);
 //			USART_SendData(USART2,0);			
 //			UsartPrintf(USART1,"usart%dyes",1);
 //			UsartPrintf(USART2,"usart%dyes",2);		
 //		}
 		/*****************XXXXXXXXXX***************/		
-		/*****************MQTTï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½***************/  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		dataPtr = ESP8266_GetIPD(3);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½Ö¸ï¿½ï¿½  Ö´ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òª15ms,ï¿½ï¿½Ã´Ö´ï¿½ï¿½Ò»ï¿½ï¿½while(1)ï¿½ï¿½Òª25ms
+		/*****************MQTT½ÓÊÕ/·¢²¼Ö÷ÌâÄÚÈÝ***************/  //·ÅÔÚ×îºó
+		dataPtr = ESP8266_GetIPD(3);   //¼ì²éÓÐÎÞÏÂ·¢Ö¸Áî  Ö´ÐÐÕâÒ»Ìõ³ÌÐòÐèÒª15ms,ÄÇÃ´Ö´ÐÐÒ»´Îwhile(1)ÐèÒª25ms
 		if(dataPtr != NULL)
 			OneNet_RevPro(dataPtr);
 		
-		if(++timeCount >= 120)		//ï¿½ï¿½ï¿½Í¼ï¿½ï¿½5s   5sï¿½Ï´ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  5000/25=200    ï¿½Ó´ï¿½ï¿½ï¿½Æµï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		if(++timeCount >= 120)		//·¢ËÍ¼ä¸ô5s   5sÉÏ´«Ò»´ÎÊý¾Ý  5000/25=200    ¼Ó´ó·¢ËÍÆµÂÊ£¬¸ü¿ì¸üÐÂÊý¾Ý
 		{
 			UsartPrintf(USART_DEBUG, "OneNet_Publish\r\n");
 			sprintf(PUB_BUF,"{\"Humi\":%d,\"Temp\":%d,\"Light\":%d,\"Airq\":%d,\"Led\":%d,\"Beep\":%d}",Humidity,
@@ -185,27 +185,27 @@ int main(void)
 		}
 		if(tp_dev.scan(0))
         {           
-            //DEBUG_LOG("ï¿½Ð¶Ï³É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½x:%d,y:%d\r\n",tp_dev.x[0],tp_dev.y[0]);
-            //while(tp_dev.scan(0)) delay_ms(30);//Ö»ï¿½ï¿½È¡Ò»ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¬ï¿½ðµ½·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  //ï¿½È´ï¿½ï¿½ï¿½ï¿½É¿ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //DEBUG_LOG("ÖÐ¶Ï³É¹¦£¬´¥Ãþ×ø±êÎª£ºx:%d,y:%d\r\n",tp_dev.x[0],tp_dev.y[0]);
+            //while(tp_dev.scan(0)) delay_ms(30);//Ö»»ñÈ¡Ò»´Î´¥ÃþÆÁ×ø±ê£¬Æðµ½·À¶¶¹¦ÄÜ  //µÈ´ýÊÖËÉ¿ªÖ´ÐÐÏÂÃæ³ÌÐò
 			while(tp_dev.sta & 0x80) delay_ms(50);
-            if(Lcd_Page >= 1 && Lcd_Page <= 4)//Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½Ä¿Ç°Ò»ï¿½ï¿½ï¿½ï¿½7ï¿½ï¿½Ä£ï¿½é£©
+            if(Lcd_Page >= 1 && Lcd_Page <= 4)//Ö»ÓÐÔÚÇÐ»»Ò»¼¶¹¦ÄÜÒ³ÃæµÄÊ±ºò¿ÉÒÔÆð×÷ÓÃ£¨Ä¿Ç°Ò»¹²ÓÐ7¸öÄ£¿é£©
             {
-                changeflag=1;//Ò³ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½ï¿½ï¿½LCD_Clear(WHITE)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½BUG
-                if(tp_dev.x[0] > 60 && tp_dev.x[0] < 108 && tp_dev.y[0] > 210 && tp_dev.y[0] < 258)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                changeflag=1;//Ò³ÃæÇÐ»»ÇåÆÁ±êÖ¾Î»,½â¾öÔÚÖÐ¶Ïº¯ÊýÖÐLCD_Clear(WHITE)²»Æð×÷ÓÃµÄBUG
+                if(tp_dev.x[0] > 60 && tp_dev.x[0] < 108 && tp_dev.y[0] > 210 && tp_dev.y[0] < 258)//Èç¹û°´ÏÂ×ó¼ü
                 {
                     lcd_clear(WHITE);
-                    Lcd_Page--;//LCDï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                    Lcd_Page--;//LCD¹¦ÄÜÒ³Ãæ
                     if(Lcd_Page<1)
                     Lcd_Page=4;
                 }
-                else if(tp_dev.x[0]>340 && tp_dev.x[0]<388 && tp_dev.y[0] > 210 && tp_dev.y[0] < 258)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½
+                else if(tp_dev.x[0]>340 && tp_dev.x[0]<388 && tp_dev.y[0] > 210 && tp_dev.y[0] < 258)//Èç¹û°´ÏÂÓÒ¼ü
                 {
                         lcd_clear(WHITE);
-                        Lcd_Page++;//LCDï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                        Lcd_Page++;//LCD¹¦ÄÜÒ³Ãæ
                         if(Lcd_Page>4)
                         Lcd_Page=1;
                 }
-                else if(tp_dev.x[0]>160 &&tp_dev.x[0]<288 && tp_dev.y[0]>160&&tp_dev.y[0]<288)//ï¿½ï¿½ï¿½Ñ¡ï¿½Ð¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                else if(tp_dev.x[0]>160 &&tp_dev.x[0]<288 && tp_dev.y[0]>160&&tp_dev.y[0]<288)//Èç¹ûÑ¡ÖÐ¶ÔÓ¦¹¦ÄÜÒ³Ãæ
                 {
                     if(Lcd_Page==1)
                     {
@@ -284,10 +284,10 @@ int main(void)
                         BEEP1(1);
                     }
                 }
-                else if(tp_dev.x[0]>60 && tp_dev.x[0]<108 && tp_dev.y[0]>362 && tp_dev.y[0]<410)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                else if(tp_dev.x[0]>60 && tp_dev.x[0]<108 && tp_dev.y[0]>362 && tp_dev.y[0]<410)//·µ»ØÖ÷Ò³Ãæ
                 {
                     lcd_clear(WHITE);
-                    changeflag=1;//Ò³ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½ï¿½ï¿½LCD_Clear(WHITE)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½BUG
+                    changeflag=1;//Ò³ÃæÇÐ»»ÇåÆÁ±êÖ¾Î»,½â¾öÔÚÖÐ¶Ïº¯ÊýÖÐLCD_Clear(WHITE)²»Æð×÷ÓÃµÄBUG
                     Lcd_Page=1;
                 }
             }
@@ -301,10 +301,10 @@ int main(void)
                 {
                         HomeMode = 0;
                 }
-                else if(tp_dev.x[0]>60&&tp_dev.x[0]<108 && tp_dev.y[0]>362&&tp_dev.y[0]<410)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                else if(tp_dev.x[0]>60&&tp_dev.x[0]<108 && tp_dev.y[0]>362&&tp_dev.y[0]<410)//·µ»ØÖ÷Ò³Ãæ
                 {
                     lcd_clear(WHITE);
-                    changeflag=1;//Ò³ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½ï¿½ï¿½LCD_Clear(WHITE)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½BUG
+                    changeflag=1;//Ò³ÃæÇÐ»»ÇåÆÁ±êÖ¾Î»,½â¾öÔÚÖÐ¶Ïº¯ÊýÖÐLCD_Clear(WHITE)²»Æð×÷ÓÃµÄBUG
                     Lcd_Page=2;
                 }
             }
@@ -327,13 +327,13 @@ int main(void)
                     LightMax++;
                 else if(tp_dev.x[0]>230&&tp_dev.x[0]<340 && tp_dev.y[0]>278&&tp_dev.y[0]<302)
                     LightMax--;
-                else if(tp_dev.x[0]>60&&tp_dev.x[0]<108 && tp_dev.y[0]>362&&tp_dev.y[0]<410)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                else if(tp_dev.x[0]>60&&tp_dev.x[0]<108 && tp_dev.y[0]>362&&tp_dev.y[0]<410)//·µ»ØÖ÷Ò³Ãæ
                 {
                     lcd_clear(WHITE);
-                    changeflag=1;//Ò³ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½ï¿½ï¿½LCD_Clear(WHITE)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½BUG
+                    changeflag=1;//Ò³ÃæÇÐ»»ÇåÆÁ±êÖ¾Î»,½â¾öÔÚÖÐ¶Ïº¯ÊýÖÐLCD_Clear(WHITE)²»Æð×÷ÓÃµÄBUG
                     Lcd_Page=3;
                 }
-				//ï¿½ï¿½AT24C02ï¿½ï¿½Ð´ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+				//ÏòAT24C02ÖÐÐ´Èë¸Ä¶¯ºóµÄãÐÖµ
 				at24cxx_write_one_byte(60,TemperatureMax);
 				at24cxx_write_one_byte(61,HumidityMax);
 				at24cxx_write_one_byte(62,LightMax);
@@ -354,10 +354,10 @@ int main(void)
 //                        LED1(1);
 //                    }
 //                } else
-                if(tp_dev.x[0]>60&&tp_dev.x[0]<108 && tp_dev.y[0]>362&&tp_dev.y[0]<410)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+                if(tp_dev.x[0]>60&&tp_dev.x[0]<108 && tp_dev.y[0]>362&&tp_dev.y[0]<410)//·µ»ØÖ÷Ò³Ãæ
                 {
                     lcd_clear(WHITE);
-                    changeflag=1;//Ò³ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½ï¿½ï¿½LCD_Clear(WHITE)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½BUG
+                    changeflag=1;//Ò³ÃæÇÐ»»ÇåÆÁ±êÖ¾Î»,½â¾öÔÚÖÐ¶Ïº¯ÊýÖÐLCD_Clear(WHITE)²»Æð×÷ÓÃµÄBUG
                     Lcd_Page=3;
                 }
             }
@@ -381,11 +381,11 @@ int main(void)
         lcd_show_string(170, 490, 210, 16, 16, (char *)tbuf, RED);
         sprintf((char *)tbuf, "Week:%s", weekdays[calendar.week]);
         lcd_show_string(170, 510, 210, 16, 16, (char *)tbuf, RED);
-		if(t % 40 == 0) LED0_TOGGLE(); //LED0ï¿½ï¿½ï¿½,1sï¿½Ð»ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1000/25=40
+		if(t % 40 == 0) LED0_TOGGLE(); //LED0ºìµÆ,1sÇÐ»»×´Ì¬£¬ÌáÊ¾³ÌÐòÔËÐÐ 1000/25=40
        	  	
 		delay_ms(10);
 		t++;
-		 if (t == 120)//ï¿½ï¿½ï¿½ÒªÈ¡ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½tÈ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		 if (t == 120)//Õâ¸öÒªÈ¡ÒÔÉÏ¸÷¸ötÈ¡Óà¶ÔÏóµÄ×îÐ¡¹«±¶Êý
         {
             t = 0;         
         }

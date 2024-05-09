@@ -1,0 +1,30 @@
+2024/04/29 09:41:08 Started Launch Tool 
+2024/04/29 09:41:08 Started as PID 45748
+2024/04/29 09:41:08 Started with arguments []string{"D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\resources\\launch-tool.exe", "“D:\\Desktop\\程序代码\\1210_1_16\\1210_1_16\\RTE\\DeviceTLE9871QXA20\\config.icwp”", "-ddevice=TLE9871QXA20"}
+2024/04/29 09:41:08 Started in directory D:\Desktop\程序代码\1210_1_16\1210_1_16
+2024/04/29 09:41:08 Reading tool data
+2024/04/29 09:41:08 Reading "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\resources\\tool-details.json"
+2024/04/29 09:41:08 Validating tool data
+2024/04/29 09:41:08 Starting tool &main.Tool{FeatureID:"com.ifx.tb.tool.ifxconfigwizardforembeddedpowerics", Title:"Config Wizard for MOTIX? MCU", Version:"2.7.3.202306221148", Path:"D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe"}
+2024/04/29 09:41:08 Starting "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe" with arguments []string{"“D:\\Desktop\\程序代码\\1210_1_16\\1210_1_16\\RTE\\DeviceTLE9871QXA20\\config.icwp”", "-ddevice=TLE9871QXA20"}
+2024/04/29 09:41:08 Starting "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe" in directory "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148"
+2024/04/29 09:41:08 Started "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe" as PID 46316
+2024/04/29 09:41:08 Starting Launcher Service
+2024/04/29 09:41:08 Starting "C:\\Users\\湘滨\\Infineon\\LauncherService\\idc-launcher-service.exe" with arguments []string{"-featureid", "com.ifx.tb.tool.ifxconfigwizardforembeddedpowerics:2.7.3.202306221148", "-notification", "-toolbox.service", "checkUpdate com.ifx.tb.tool.ifxconfigwizardforembeddedpowerics"}
+2024/04/29 09:41:08 Starting "C:\\Users\\湘滨\\Infineon\\LauncherService\\idc-launcher-service.exe" in directory "C:\\Users\\湘滨"
+2024/04/29 09:41:08 Started "C:\\Users\\湘滨\\Infineon\\LauncherService\\idc-launcher-service.exe" as PID 38520
+2024/04/29 09:41:20 Started Launch Tool 
+2024/04/29 09:41:20 Started as PID 42204
+2024/04/29 09:41:20 Started with arguments []string{"D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\resources\\launch-tool.exe", "“D:\\Desktop\\程序代码\\1210_1_16\\1210_1_16\\RTE\\DeviceTLE9871QXA20\\config.icwp”", "-ddevice=TLE9871QXA20"}
+2024/04/29 09:41:20 Started in directory D:\Desktop\程序代码\1210_1_16\1210_1_16
+2024/04/29 09:41:20 Reading tool data
+2024/04/29 09:41:20 Reading "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\resources\\tool-details.json"
+2024/04/29 09:41:20 Validating tool data
+2024/04/29 09:41:20 Starting tool &main.Tool{FeatureID:"com.ifx.tb.tool.ifxconfigwizardforembeddedpowerics", Title:"Config Wizard for MOTIX? MCU", Version:"2.7.3.202306221148", Path:"D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe"}
+2024/04/29 09:41:20 Starting "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe" with arguments []string{"“D:\\Desktop\\程序代码\\1210_1_16\\1210_1_16\\RTE\\DeviceTLE9871QXA20\\config.icwp”", "-ddevice=TLE9871QXA20"}
+2024/04/29 09:41:20 Starting "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe" in directory "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148"
+2024/04/29 09:41:20 Started "D:\\Infineon\\Tools\\Config-Wizard-for-MOTIX-MCU\\2.7.3.202306221148\\/ConfigWizard.exe" as PID 35484
+2024/04/29 09:41:20 Starting Launcher Service
+2024/04/29 09:41:20 Starting "C:\\Users\\湘滨\\Infineon\\LauncherService\\idc-launcher-service.exe" with arguments []string{"-featureid", "com.ifx.tb.tool.ifxconfigwizardforembeddedpowerics:2.7.3.202306221148", "-notification", "-toolbox.service", "checkUpdate com.ifx.tb.tool.ifxconfigwizardforembeddedpowerics"}
+2024/04/29 09:41:20 Starting "C:\\Users\\湘滨\\Infineon\\LauncherService\\idc-launcher-service.exe" in directory "C:\\Users\\湘滨"
+2024/04/29 09:41:20 Started "C:\\Users\\湘滨\\Infineon\\LauncherService\\idc-launcher-service.exe" as PID 23000

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\T36-18.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>all</name>
+      <member>
+        <project>T36-18</project>
+        <configuration>52350</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>
+
+

@@ -1,0 +1,21 @@
+#ifndef __PWMN_IRQ_H__
+#define __PWMN_IRQ_H__
+
+#define PWMN_NUM_IRQS 11
+
+typedef enum
+{
+  PWMN_IRQ_OC = 0,
+  PWMN_IRQ_START_EVT = 1,
+  PWMN_IRQ_MIDDLE_EVT = 2,
+  PWMN_IRQ_DEAD_TIME_EVT_0 = 3,
+  PWMN_IRQ_DEAD_TIME_EVT_1 = 4,
+  PWMN_IRQ_DEAD_TIME_EVT_2 = 5,
+  PWMN_IRQ_DEAD_TIME_EVT_3 = 6,
+  PWMN_IRQ_DEAD_TIME_EVT_4 = 7,
+  PWMN_IRQ_DEAD_TIME_EVT_5 = 8,
+  PWMN_IRQ_DEAD_TIME_EVT_6 = 9,
+  PWMN_IRQ_DEAD_TIME_EVT_7 = 10
+} pwmn_irq_t;
+
+#endif

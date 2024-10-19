@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"foc_defines.h": "c",
+			"common.h": "c",
+			"appmain.h": "c",
+			"fcttest.h": "c",
+			"userinfo.h": "c",
+			"apptypes.h": "c",
+			"motordiagspeed.h": "c",
+			"Sdk.h": "c",
+			"adcsample.h": "c",
+			"gpt12e_defines.h": "c",
+			"emo_ram.h": "c",
+			"tle_device.h": "c",
+			"rte_components.h": "c",
+			"emo.h": "c",
+			"sdktypes.h": "c",
+			"sdkadc.h": "c",
+			"motorapi.h": "c",
+			"saradc_module.h": "c",
+			"pre_pwm_module.h": "c"
+		}
+	}
+}

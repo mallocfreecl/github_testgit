@@ -1,0 +1,14 @@
+*.txt
+*.udb
+*.lst
+*.HTML
+*.pbi*
+*.r43
+*.d43
+*.pbd
+*.browse
+*.bat
+*.dbgdt
+*.dni
+*.tmp
+

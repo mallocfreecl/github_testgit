@@ -1,0 +1,48 @@
+[Sfr]
+sfr = "SYS_STATE_SW_RESET",	"Memory",	0x18a,	2,	base=16,	modified
+sfr = "SYS_STATE_CALIBRATION_LOCK",	"Memory",	0x18c,	2,	base=16,	modified
+sfr = "SYS_STATE_CALIBRATION",	"Memory",	0x18e,	2,	base=16,	modified
+sfr = "SYS_STATE_IC_VERSION_0",	"Memory",	0x190,	2,	base=16,	modified
+sfr = "SPI_0_FIFO_CLEAR",	"Memory",	0x24c,	2,	base=16,	modified
+sfr = "SPI_0_IRQ_VMAX",	"Memory",	0x26c,	2,	base=16,	modified
+sfr = "SPI_1_BAUD_CONFIG",	"Memory",	0x286,	2,	base=16,	modified
+sfr = "SPI_1_FIFO_CLEAR",	"Memory",	0x28c,	2,	base=16,	modified
+sfr = "SPI_1_FIFO_LEVELS",	"Memory",	0x28e,	2,	base=16,	modified
+sfr = "CCTIMER_1_IRQ_VMAX",	"Memory",	0x43c,	2,	base=16,	modified
+sfr = "CCTIMER_3_IRQ_VENABLE",	"Memory",	0x4b8,	2,	base=16,	modified
+sfr = "CCTIMER_3_IRQ_VMAX",	"Memory",	0x4bc,	2,	base=16,	modified
+sfr = "SARADC_CTRL_CFG_SAR_TIMING",	"Memory",	0x502,	2,	base=16,	modified
+sfr = "PRE_PWM_BP_MAX",	"Memory",	0x582,	2,	base=16,	modified
+sfr = "PRE_PWM_BASE_PHASE",	"Memory",	0x58c,	2,	base=16,	modified
+sfr = "PRE_PWM_SCALE_OFFSET1",	"Memory",	0x59e,	2,	base=16,	modified
+sfr = "PRE_PWM_SYNC_EN",	"Memory",	0x596,	2,	base=16,	modified
+sfr = "PRE_PWM_SYNC_EXT_CFG",	"Memory",	0x598,	2,	base=16,	modified
+sfr = "PRE_PWM_U_ADDR",	"Memory",	0x5b0,	2,	base=16,	modified
+sfr = "PRE_PWM_V_ADDR",	"Memory",	0x5c0,	2,	base=16,	modified
+sfr = "PRE_PWM_V_LW_RLD",	"Memory",	0x5c6,	2,	base=16,	modified
+sfr = "PRE_PWM_W_LW_RLD",	"Memory",	0x5d6,	2,	base=16,	modified
+sfr = "PRE_PWM_IRQ_VNO",	"Memory",	0x5fe,	2,	base=16,	modified
+sfr = "PWMN_CFG",	"Memory",	0x600,	2,	base=16,	modified
+sfr = "PWMN_CNT",	"Memory",	0x606,	2,	base=16,	modified
+sfr = "PWMN_PRESCALER",	"Memory",	0x60a,	2,	base=16,	modified
+sfr = "PWMN_CNT_MAX",	"Memory",	0x60c,	2,	base=16,	modified
+sfr = "PWMN_DEAD_TIME",	"Memory",	0x60e,	2,	base=16,	modified
+sfr = "PWMN_PRESCALER_RELOAD",	"Memory",	0x610,	2,	base=16,	modified
+sfr = "PWMN_NTH_START_RELOAD",	"Memory",	0x61a,	2,	base=16,	modified
+sfr = "PWMN_PWM0_CFG",	"Memory",	0x620,	2,	base=16,	modified
+sfr = "PWMN_PWM0_C0",	"Memory",	0x622,	2,	base=16,	modified
+sfr = "PWMN_PWM3_C1",	"Memory",	0x654,	2,	base=16,	modified
+sfr = "PWMN_PWM2_ON",	"Memory",	0x646,	2,	base=16,	modified
+sfr = "PWMN_PWM3_ON",	"Memory",	0x656,	2,	base=16,	modified
+sfr = "PWMN_PWM1_C0_RELOAD",	"Memory",	0x638,	2,	base=16,	modified
+sfr = "PWMN_PWM2_ON_RELOAD",	"Memory",	0x64c,	2,	base=16,	modified
+sfr = "PWMN_PWM3_ON_RELOAD",	"Memory",	0x65c,	2,	base=16,	modified
+sfr = "PWMN_IRQ_VNO",	"Memory",	0x67e,	2,	base=16,	modified
+
+
+[SfrGroupInfo]
+group = "Custom", "SYS_STATE_SW_RESET", "SYS_STATE_CALIBRATION_LOCK", "SYS_STATE_CALIBRATION", "SYS_STATE_IC_VERSION_0", "SPI_0_FIFO_CLEAR", "SPI_0_IRQ_VMAX", "SPI_1_BAUD_CONFIG", "SPI_1_FIFO_CLEAR", "SPI_1_FIFO_LEVELS", "CCTIMER_1_IRQ_VMAX", "CCTIMER_3_IRQ_VENABLE"
+group = "Custom", "CCTIMER_3_IRQ_VMAX", "SARADC_CTRL_CFG_SAR_TIMING", "PRE_PWM_BP_MAX", "PRE_PWM_BASE_PHASE", "PRE_PWM_SCALE_OFFSET1", "PRE_PWM_SYNC_EN", "PRE_PWM_SYNC_EXT_CFG", "PRE_PWM_U_ADDR", "PRE_PWM_V_ADDR"
+group = "Custom", "PRE_PWM_V_LW_RLD", "PRE_PWM_W_LW_RLD", "PRE_PWM_IRQ_VNO", "PWMN_CFG", "PWMN_CNT", "PWMN_PRESCALER"
+group = "Custom", "PWMN_CNT_MAX", "PWMN_DEAD_TIME", "PWMN_PRESCALER_RELOAD", "PWMN_NTH_START_RELOAD", "PWMN_PWM0_CFG", "PWMN_PWM0_C0"
+group = "Custom", "PWMN_PWM3_C1", "PWMN_PWM2_ON", "PWMN_PWM3_ON", "PWMN_PWM1_C0_RELOAD", "PWMN_PWM2_ON_RELOAD", "PWMN_PWM3_ON_RELOAD", "PWMN_IRQ_VNO"

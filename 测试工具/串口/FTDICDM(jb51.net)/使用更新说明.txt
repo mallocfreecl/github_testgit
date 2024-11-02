@@ -1,0 +1,3 @@
+FTDI CDM Drivers是FTDI CDM USB转串口需要安装的驱动程序。ftdi usb转串口驱动用于全系列WINDOWS操作系统(WIN9X除外)，支持最新的WIN8/8.1及WIN2012 R2系统。
+
+

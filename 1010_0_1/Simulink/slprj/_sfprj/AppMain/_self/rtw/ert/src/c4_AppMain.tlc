@@ -1,0 +1,60 @@
+%implements "chartSource" "C"
+%function ChartConfig(block, system) void
+  %createrecord chartConfiguration { ...
+          executeAtInitialization  0 ...
+  }
+  %return chartConfiguration
+%endfunction
+%function ChartDataMap(block, system) void
+  %createrecord ChartDataElements {\
+    NumChartData   6 \
+    ChartDataDefaults {\
+      RecordType   "ChartData"\
+      Dimensions   []\
+      IsTestPoint  0\
+    }\
+    ChartData {\
+      Name         "local_hightime"\
+      Description  "ChartLocal"\
+      SFName       ""\
+      Path         "local_hightime"\
+      SrcLocation  ""\
+    }\
+    ChartData {\
+      Name         "local_lowtime"\
+      Description  "ChartLocal"\
+      SFName       ""\
+      Path         "local_lowtime"\
+      SrcLocation  ""\
+    }\
+    ChartData {\
+      Name         "FaultRecoverCnt"\
+      Description  "ChartLocal"\
+      SFName       ""\
+      Path         "FaultRecoverCnt"\
+      SrcLocation  ""\
+    }\
+    ChartData {\
+      Name         "FeedBackNumberLast"\
+      Description  "ChartLocal"\
+      SFName       ""\
+      Path         "FeedBackNumberLast"\
+      SrcLocation  ""\
+    }\
+    ChartData {\
+      Name         "is_active_c4_AppMain"\
+      Description  "StateIsActive"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  ""\
+    }\
+    ChartData {\
+      Name         "is_TimeJudge"\
+      Description  "StateActiveChild"\
+      SFName       ""\
+      Path         "TimeJudge"\
+      SrcLocation  ""\
+    }\
+  }
+  %return ChartDataElements
+%endfunction

@@ -1,2 +1,0 @@
-set "MINGW_ROOT=C:\TDM-GC~1\bin"
-@set "PATH=%PATH%;%MINGW_ROOT%"
